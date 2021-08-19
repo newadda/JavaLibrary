@@ -7,7 +7,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
-public abstract class AHibernateRepository<T,ID extends Serializable> extends org.lib.db.repository.spring.ARepository<HibernateTransactionManager,SessionFactory,Session> implements org.lib.db.repository.spring.ICrudRepository<T,ID> {
+public abstract class AHibernateRepository<T,ID extends Serializable> extends ARepository<HibernateTransactionManager,SessionFactory,Session> implements ICrudRepository<T,ID> {
 
     public AHibernateRepository(HibernateTransactionManager transactionManager, SessionFactory entityManagerrFactory) {
         super(transactionManager, entityManagerrFactory);

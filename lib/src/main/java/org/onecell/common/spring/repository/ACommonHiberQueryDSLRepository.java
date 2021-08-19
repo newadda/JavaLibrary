@@ -17,7 +17,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 
 import java.util.List;
 
-public class ACommonHiberQueryDSLRepository extends org.lib.db.repository.spring.ACommonHibernateRepository {
+public class ACommonHiberQueryDSLRepository extends ACommonHibernateRepository {
     public ACommonHiberQueryDSLRepository(HibernateTransactionManager transactionManager, SessionFactory entityManagerrFactory) {
         super(transactionManager, entityManagerrFactory);
     }

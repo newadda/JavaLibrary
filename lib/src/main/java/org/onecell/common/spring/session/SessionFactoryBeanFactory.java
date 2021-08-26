@@ -1,6 +1,9 @@
 package org.onecell.common.spring.session;
 
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -73,5 +76,39 @@ public class SessionFactoryBeanFactory {
             }
         };
     }
+
+
+
+
+    /*
+     *  LocalContainerEntityManagerFactoryBean 은 좀더 편하게 도와준다.
+     */
+    public LocalContainerEntityManagerFactoryBean createHiberanteLocalContainerEntityManagerFactoryBean(String persistenceUnitName, DataSource dataSource
+            , String[] packagesScanPath, Properties properties, JpaVendorAdapter jpaVendorAdapter) {
+
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+        entityManagerFactoryBean.setPackagesToScan(packagesScanPath);
+        entityManagerFactoryBean.setPersistenceUnitName(persistenceUnitName);
+        entityManagerFactoryBean.setJpaProperties(properties);
+        return entityManagerFactoryBean;
+    }
+
+    public LocalContainerEntityManagerFactoryBean createHiberanteLocalContainerEntityManagerFactoryBean(String persistenceUnitName,DataSource dataSource
+            ,String[] packagesScanPath) {
+
+        return createHiberanteLocalContainerEntityManagerFactoryBean(persistenceUnitName,dataSource,packagesScanPath,hibernateDefaultProperties(),defaultHibernateVendorAdapter());
+    }
+
+
+
+    public JpaVendorAdapter defaultHibernateVendorAdapter() {
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        hibernateJpaVendorAdapter.setShowSql(true);
+        hibernateJpaVendorAdapter.setGenerateDdl(false);
+        return hibernateJpaVendorAdapter;
+    }
+
 
 }

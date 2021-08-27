@@ -8,10 +8,24 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Set;
 
 public class SessionFactoryBeanFactory {
    public LocalSessionFactoryBean createHibernateLocalSessionFactoryBean(DataSource dataSource, String[] packagesScanPath, Properties properties)
    {
+       Properties defaultProperties = hibernateDefaultProperties();
+       Set<Object> keys = defaultProperties.keySet();
+
+       for( Object key :keys)
+       {
+           boolean b = properties.containsKey(key);
+           if(b==false)
+           {
+               properties.put(key,defaultProperties.get(key));
+           }
+       }
+
+
        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
        sessionFactory.setDataSource(dataSource);
        sessionFactory.setPackagesToScan(

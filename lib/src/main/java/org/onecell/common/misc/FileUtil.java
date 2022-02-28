@@ -27,7 +27,7 @@ public class FileUtil {
 
     public static String mimeType(String fileExtension)
     {
-        MimeMappings mappings =MimeMappings.DEFAULT;
+        MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
         String mimeType = mappings.get(fileExtension);
 
         if(mimeType == null) {

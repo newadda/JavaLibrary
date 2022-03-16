@@ -133,9 +133,10 @@ dependencies {
 
     // Rest Doc
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.6.RELEASE'
+    //asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:1.2.6.RELEASE'
     testImplementation("org.springframework.boot:spring-boot-starter-test:${springBootStarterVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-web:${springBootStarterVersion}")
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
 
     // https://mvnrepository.com/artifact/org.springframework.restdocs/spring-restdocs-asciidoctor
     asciidoctorExt   group: 'org.springframework.restdocs', name: 'spring-restdocs-asciidoctor', version: '2.0.5.RELEASE' // macro를 위해서 사용
@@ -341,8 +342,8 @@ test {
     useJUnitPlatform()
 }
 
-
+/*
 asciidoctor {
     configurations 'asciidoctorExt'
 
-}
+}*/

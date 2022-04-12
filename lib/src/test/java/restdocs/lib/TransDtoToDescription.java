@@ -94,6 +94,14 @@ public class TransDtoToDescription {
 
     public static Map<String, Description> _trans(String prefix,Class clazz) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException, ClassNotFoundException {
         Map<String, Description> map = new LinkedHashMap<>();
+
+        // 일반적인 프리미티브 타입이 아니면
+       /* if(getTypeName(clazz) != DataType.Object)
+        {
+            return ;
+        }*/
+
+
         for (Field field : clazz.getDeclaredFields()) {
             Description item = new Description();
             field.setAccessible(true);
@@ -106,43 +114,57 @@ public class TransDtoToDescription {
 
             item.setType(jsonType.name());
 
+            Boolean isDescriptionField = false; // 내 어노테이션 붙은 것만 처리한다.
             List<String> constraintList = new LinkedList<>();
             for (Annotation anno : field.getDeclaredAnnotations()) {
                 Annotation[] annotations = anno.annotationType().getDeclaredAnnotations();
 
                 Stream<Annotation> annotationStream = Arrays.stream(annotations).filter(
                         annotation -> annotation.annotationType().isAssignableFrom(Constraint.class));
+
                 boolean present = annotationStream.findFirst().isPresent();
                 if (present == true) {
                     constraintList.add(getConstraintString(anno));
                 } else if (anno.annotationType().isAssignableFrom(Description.class)) {
 
                     item.setDescription(anno.annotationType().getDeclaredMethod("value").invoke(anno).toString());
+                    isDescriptionField = true;
                 }
+
             }
-            item.setConstraints(constraintList);
-            map.put(item.getPath(), item);
 
-            if(jsonType.equals(DataType.Object)) {
-                item.setIsOptional(true);
-                Map<String, Description> stringDescriptionMap = _trans(item.getPath() + ".", field.getType());
+            if(isDescriptionField)
+            {
+                item.setConstraints(constraintList);
+                map.put(item.getPath(), item);
 
-                /// Object 가 null이 될수 있으므로. optional을 준다.
-                stringDescriptionMap.forEach((s, description) -> description.setIsOptional(true));
-                map.putAll(stringDescriptionMap);
-            }else if(jsonType.equals(DataType.Array)){
-                item.setIsOptional(true);
-                ParameterizedType genericType = (ParameterizedType)field.getGenericType();
-                if(genericType.getActualTypeArguments().length>0)
-                {
-                    Type generic =  genericType.getActualTypeArguments()[0];
+                if(jsonType.equals(DataType.Object)) {
+                    item.setIsOptional(true);
+                    Map<String, Description> stringDescriptionMap = _trans(item.getPath() + ".", field.getType());
 
-                    Map<String, Description> stringDescriptionMap = _trans(item.getPath() + "[].",  getClass(generic));
+                    /// Object 가 null이 될수 있으므로. optional을 준다.
                     stringDescriptionMap.forEach((s, description) -> description.setIsOptional(true));
                     map.putAll(stringDescriptionMap);
-                }
+                }else if(jsonType.equals(DataType.Array)){
+                    item.setIsOptional(true);
+                    ParameterizedType genericType = (ParameterizedType)field.getGenericType();
+                    if(genericType.getActualTypeArguments().length>0)
+                    {
+                        Type generic =  genericType.getActualTypeArguments()[0];
 
+                        Class<?> aClass = getClass(generic);
+
+
+                        Map<String, Description> stringDescriptionMap = _trans(item.getPath() + "[].",  getClass(generic));
+                        stringDescriptionMap.forEach((s, description) -> description.setIsOptional(true));
+                        map.putAll(stringDescriptionMap);
+                    }
+
+                }
             }
+
+
+
         }
 
         return map;

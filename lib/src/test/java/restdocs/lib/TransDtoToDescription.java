@@ -99,7 +99,18 @@ public class TransDtoToDescription {
        /* if(getTypeName(clazz) != DataType.Object)
         {
             return ;
+
         }*/
+
+
+        /// 부모 클래스의 필드 목록까지 가져온다.
+        Class superclass = clazz.getSuperclass();
+        if(!superclass.isAssignableFrom(Object.class))
+        {
+            Map<String, Description> stringDescriptionMap = _trans(prefix, superclass);
+            map.putAll(stringDescriptionMap);
+        }
+
 
 
         for (Field field : clazz.getDeclaredFields()) {

@@ -7,6 +7,7 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.spatial.*;
 import org.hibernate.spatial.dialect.WithCustomJPAFilter;
+import org.hibernate.type.BooleanType;
 import org.hibernate.type.LocalDateTimeType;
 
 import org.onecell.common.hibernate.dialect.tibero.TiberoGeometryTypeDescriptor;
@@ -36,7 +37,7 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
         }
 
         registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
-
+        registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
     }
 
     @Override

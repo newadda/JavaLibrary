@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.snippet.Attributes.key;
 
@@ -41,6 +41,8 @@ public class TransDtoToDescription {
         private Boolean isOptional=false;
 
         public FieldDescriptor createField() {
+
+
             FieldDescriptor fieldDescriptor = fieldWithPath(path);
             if(isOptional==true)
             {
@@ -164,7 +166,6 @@ public class TransDtoToDescription {
                         Type generic =  genericType.getActualTypeArguments()[0];
 
                         Class<?> aClass = getClass(generic);
-
 
                         Map<String, Description> stringDescriptionMap = _trans(item.getPath() + "[].",  getClass(generic));
                         stringDescriptionMap.forEach((s, description) -> description.setIsOptional(true));

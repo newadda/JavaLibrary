@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class TiberoSupport  implements SpatialDialect, Serializable {
 
 
-    private org.lib.db.dialect.tibero.TiberoSpatialFunctions postgisFunctions = new org.lib.db.dialect.tibero.TiberoSpatialFunctions();
+    private TiberoSpatialFunctions postgisFunctions = new TiberoSpatialFunctions();
 
     void contributeTypes(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
         typeContributions.contributeType( new GeolatteGeometryType( TiberoGeometryTypeDescriptor.INSTANCE ) );
@@ -19,7 +19,7 @@ public class TiberoSupport  implements SpatialDialect, Serializable {
         typeContributions.contributeJavaTypeDescriptor( JTSGeometryJavaTypeDescriptor.INSTANCE );
     }
 
-    public org.lib.db.dialect.tibero.TiberoSpatialFunctions functionsToRegister() {
+    public TiberoSpatialFunctions functionsToRegister() {
         return postgisFunctions;
     }
 

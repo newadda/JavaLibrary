@@ -7,8 +7,7 @@ package org.onecell.example.jpa.entity.block;
 
 
 import org.hibernate.annotations.Nationalized;
-import org.waterworks.lib.db.code.impl.BlockType;
-import org.waterworks.lib.db.converter.impl.BlockTypeToStringConverter;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -50,9 +49,9 @@ public abstract class ABlock  implements Serializable {
 
 
 
-    @Column(name = "BK_CL",columnDefinition="CHAR(6)")
-    @Convert(converter = BlockTypeToStringConverter.class)
-    BlockType blocktype;
+  //  @Column(name = "BK_CL",columnDefinition="CHAR(6)")
+   // @Convert(converter = BlockTypeToStringConverter.class)
+   // BlockType blocktype;
 
 
 

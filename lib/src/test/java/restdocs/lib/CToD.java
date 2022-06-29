@@ -11,76 +11,11 @@ import java.util.stream.Stream;
 
 public class CToD {
 
-
-
-
-
-
-    public static class Item{
-        String prefix;
-        String name;
-        Object Type;
-        boolean isOptional=false;
-        List<String> desc=new LinkedList<>();
-        List<String> constraints=new LinkedList<>();
-
-        public String getPath()
-        {
-            if(prefix!=null)
-            {
-                return String.join(".",prefix,name);
-            }else {
-                return name;
-            }
-
-        }
-
-        public String getPrefix() {
-            return prefix;
-        }
-
-        public void setPrefix(String prefix) {
-            this.prefix = prefix;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Object getType() {
-            return Type;
-        }
-
-        public void setType(Object type) {
-            Type = type;
-        }
-
-        public boolean isOptional() {
-            return isOptional;
-        }
-
-        public void setOptional(boolean optional) {
-            isOptional = optional;
-        }
-
-        public List<String> getDesc() {
-            return desc;
-        }
-
-        public List<String> getConstraints() {
-            return constraints;
-        }
-    }
-
     public static class FieldDesc{
-        Item item;
+        restdoc.ctod.Item item;
         Class subClass;
 
-        public void setItem(Item item) {
+        public void setItem(restdoc.ctod.Item item) {
             this.item = item;
         }
 
@@ -88,7 +23,7 @@ public class CToD {
             this.subClass = subClass;
         }
 
-        public Item getItem() {
+        public restdoc.ctod.Item getItem() {
             return item;
         }
 
@@ -107,18 +42,25 @@ public class CToD {
         Array;
     }
 
+    public CToDWriter trans(Class clazz) throws Exception {
+        final List<restdoc.ctod.Item> items = _trans(null, clazz);
+        CToDWriter cToDWriter = new CToDWriter(items);
+        return cToDWriter;
+
+    }
 
 
-    private List<Item> _trans(String prefix,Class clazz) throws Exception
+
+    private List<restdoc.ctod.Item> _trans(String prefix, Class clazz) throws Exception
     {
-        List<Item> ret = new LinkedList<>();
+        List<restdoc.ctod.Item> ret = new LinkedList<>();
 
         ///===== 부모 클래스의 필드 목록까지 가져온다.
         Class superclass = clazz.getSuperclass();
-        // 부모가 Object 일때까지..
-        if(!superclass.isAssignableFrom(Object.class))
+        // 부모가 Object 일때까지.. superclass 가 null은 interface 일 경우
+        if(superclass!=null && !superclass.isAssignableFrom(Object.class))
         {
-            List<Item> superItems = _trans(prefix, superclass);
+            List<restdoc.ctod.Item> superItems = _trans(prefix, superclass);
             ret.addAll(superItems);
         }
 
@@ -135,21 +77,46 @@ public class CToD {
 
             ret.add(fieldDesc.getItem());
 
-            final Class subClass = fieldDesc.getSubClass();
-            if(subClass!=null)
+            /// 배열 일때 처리하기.
+            if(Collection.class.isAssignableFrom(field.getType()))
             {
-                final Item item = fieldDesc.getItem();
-                final List<Item> items = _trans(item.getPath() + "[]", subClass);
+                final List<restdoc.ctod.Item> items = _transArray(fieldDesc.getItem().getPath(), field);
                 ret.addAll(items);
             }
 
+        }
+        return ret;
+    }
 
+    /// List 의 경우 처리한다.
+    private List<restdoc.ctod.Item> _transArray(String parentPath, Field field  ) throws Exception {
 
+        List<String> deli = new LinkedList<>();
+        deli.add(parentPath+"[]");
+        ParameterizedType genericType = (ParameterizedType)field.getGenericType();
+        while(true)
+        {
 
+            if(genericType.getActualTypeArguments().length>0) {
+                Type generic = genericType.getActualTypeArguments()[0];
+                final Class<?> aClass = getClass(generic);
+
+                if(Collection.class.isAssignableFrom(aClass))
+                {
+                    deli.add("[]");
+                    genericType= (ParameterizedType) generic;
+                   continue;
+                }else{
+
+                    return _trans(String.join(".", deli), aClass);
+                }
+
+            }
+            return new LinkedList<>();
 
         }
 
-        return ret;
+
     }
 
 
@@ -214,7 +181,7 @@ public class CToD {
 
     private FieldDesc fieldTrans(String prefix,Field field) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         FieldDesc fieldDesc = new FieldDesc();
-        Item item = new Item();
+        restdoc.ctod.Item item = new restdoc.ctod.Item();
 
 
         fieldDesc.setItem(item);

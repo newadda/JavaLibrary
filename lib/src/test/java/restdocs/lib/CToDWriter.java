@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CToDWriter {
-    List<restdoc.ctod.Item> itemList =new LinkedList<>();
+    List<Item> itemList =new LinkedList<>();
 
-    public CToDWriter(List<restdoc.ctod.Item> itemList) {
+    public CToDWriter(List<Item> itemList) {
         this.itemList = itemList;
     }
 

@@ -12,10 +12,10 @@ import java.util.stream.Stream;
 public class CToD {
 
     public static class FieldDesc{
-        restdoc.ctod.Item item;
+        Item item;
         Class subClass;
 
-        public void setItem(restdoc.ctod.Item item) {
+        public void setItem(Item item) {
             this.item = item;
         }
 
@@ -23,7 +23,7 @@ public class CToD {
             this.subClass = subClass;
         }
 
-        public restdoc.ctod.Item getItem() {
+        public Item getItem() {
             return item;
         }
 
@@ -43,7 +43,7 @@ public class CToD {
     }
 
     public CToDWriter trans(Class clazz) throws Exception {
-        final List<restdoc.ctod.Item> items = _trans(null, clazz);
+        final List<Item> items = _trans(null, clazz);
         CToDWriter cToDWriter = new CToDWriter(items);
         return cToDWriter;
 
@@ -51,16 +51,16 @@ public class CToD {
 
 
 
-    private List<restdoc.ctod.Item> _trans(String prefix, Class clazz) throws Exception
+    private List<Item> _trans(String prefix, Class clazz) throws Exception
     {
-        List<restdoc.ctod.Item> ret = new LinkedList<>();
+        List<Item> ret = new LinkedList<>();
 
         ///===== 부모 클래스의 필드 목록까지 가져온다.
         Class superclass = clazz.getSuperclass();
         // 부모가 Object 일때까지.. superclass 가 null은 interface 일 경우
         if(superclass!=null && !superclass.isAssignableFrom(Object.class))
         {
-            List<restdoc.ctod.Item> superItems = _trans(prefix, superclass);
+            List<Item> superItems = _trans(prefix, superclass);
             ret.addAll(superItems);
         }
 
@@ -80,7 +80,7 @@ public class CToD {
             /// 배열 일때 처리하기.
             if(Collection.class.isAssignableFrom(field.getType()))
             {
-                final List<restdoc.ctod.Item> items = _transArray(fieldDesc.getItem().getPath(), field);
+                final List<Item> items = _transArray(fieldDesc.getItem().getPath(), field);
                 ret.addAll(items);
             }
 
@@ -89,7 +89,7 @@ public class CToD {
     }
 
     /// List 의 경우 처리한다.
-    private List<restdoc.ctod.Item> _transArray(String parentPath, Field field  ) throws Exception {
+    private List<Item> _transArray(String parentPath, Field field  ) throws Exception {
 
         List<String> deli = new LinkedList<>();
         deli.add(parentPath+"[]");
@@ -181,7 +181,7 @@ public class CToD {
 
     private FieldDesc fieldTrans(String prefix,Field field) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
         FieldDesc fieldDesc = new FieldDesc();
-        restdoc.ctod.Item item = new restdoc.ctod.Item();
+        Item item = new Item();
 
 
         fieldDesc.setItem(item);

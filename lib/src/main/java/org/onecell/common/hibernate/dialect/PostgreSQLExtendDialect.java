@@ -23,6 +23,10 @@ public class PostgreSQLExtendDialect extends PostgreSQL95Dialect {
                 LocalDateTimeType.INSTANCE,"TO_TIMESTAMP(?1,'YYYYMMDDHH24MISS')"
         ));
 
+        /// TRUNC_HOUR
+        registerFunction("TRUNC_HOUR", new SQLFunctionTemplate(
+                LocalDateTimeType.INSTANCE,"date_trunc('hour',?1)"
+        ));
 
     }
 }

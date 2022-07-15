@@ -19,6 +19,7 @@ public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
             super();
             getDefaultProperties().setProperty( Environment.BATCH_VERSIONED_DATA, "true" );
             registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
+            registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
             registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, "( SDO_WITHIN_DISTANCE(?1,?2,CONCAT(CONCAT('distance=', ?3),' unit=M'))= 'TRUE') AND 1"));
            // registerFunction("dwithin", new SQLFunctionTemplate(BooleanType.INSTANCE, "(SDO_WITHIN_DISTANCE(?1,?2,'distance=4 unit=M')='TRUE' )"));
 

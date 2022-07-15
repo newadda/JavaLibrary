@@ -36,6 +36,7 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
             registerFunction( entry.getKey(), entry.getValue() );
         }
 
+        registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
         registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
         registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
     }

@@ -39,6 +39,7 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
         registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
         registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
         registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
+        registerFunction("dayofyear", new SQLFunctionTemplate(IntegerType.INSTANCE, "  to_number(to_char(?1,'DDD'))")); // 년의 일수
     }
 
     @Override

@@ -18,11 +18,18 @@ public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
         public OracleSpatialSDO12gExtendDialect() {
             super();
             getDefaultProperties().setProperty( Environment.BATCH_VERSIONED_DATA, "true" );
+
+            /// Date Teim Function
             registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
             registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
-            registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, "( SDO_WITHIN_DISTANCE(?1,?2,CONCAT(CONCAT('distance=', ?3),' unit=M'))= 'TRUE') AND 1"));
-           // registerFunction("dwithin", new SQLFunctionTemplate(BooleanType.INSTANCE, "(SDO_WITHIN_DISTANCE(?1,?2,'distance=4 unit=M')='TRUE' )"));
             registerFunction("dayofyear", new SQLFunctionTemplate(IntegerType.INSTANCE, "  to_number(to_char(?1,'DDD'))")); // 년의 일수
+
+
+            /// Spatial Function
+            // registerFunction("dwithin", new SQLFunctionTemplate(BooleanType.INSTANCE, "(SDO_WITHIN_DISTANCE(?1,?2,'distance=4 unit=M')='TRUE' )"));
+            registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, "( SDO_WITHIN_DISTANCE(?1,?2,CONCAT(CONCAT('distance=', ?3),' unit=M'))= 'TRUE') AND 1"));
+            registerFunction("WITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " ( SDO_INSIDE(?1,?2)= 'TRUE')  AND 1"));
+            registerFunction("LENGTH", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE, " SDO_GEOM.SDO_Length(?1,0.5)"));
 
 
         }

@@ -7,8 +7,7 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.spatial.*;
 import org.hibernate.spatial.dialect.WithCustomJPAFilter;
-import org.hibernate.type.BooleanType;
-import org.hibernate.type.LocalDateTimeType;
+import org.hibernate.type.*;
 
 import org.onecell.common.hibernate.dialect.tibero.TiberoGeometryTypeDescriptor;
 import org.onecell.common.hibernate.dialect.tibero.TiberoSupport;
@@ -36,10 +35,16 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
             registerFunction( entry.getKey(), entry.getValue() );
         }
 
+        /// Date Teim Function
         registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
         registerFunction("ADD_HOURS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'HOUR') )"));
-        registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
+
         registerFunction("dayofyear", new SQLFunctionTemplate(IntegerType.INSTANCE, "  to_number(to_char(?1,'DDD'))")); // 년의 일수
+
+        /// Spatial Function
+        registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
+        registerFunction("WITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_Within( ?1  ,?2)= '1') and 1"));
+        registerFunction("LENGTH", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE, "(ST_Length(?1)*111000)"));
     }
 
     @Override

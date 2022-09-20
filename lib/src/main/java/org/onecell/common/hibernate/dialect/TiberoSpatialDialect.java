@@ -4,6 +4,7 @@ import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.dialect.Oracle12cDialect;
 import org.hibernate.dialect.function.SQLFunction;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.spatial.*;
 import org.hibernate.spatial.dialect.WithCustomJPAFilter;
@@ -43,8 +44,12 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
 
         /// Spatial Function
         registerFunction("DWITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_DISTANCE( ?1  ,?2) *111000 <= ?3) and 1"));
-        registerFunction("WITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_Within( ?1  ,?2)= '1') and 1"));
+
+        //registerFunction("WITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " (ST_Within( ?1  ,?2)= '1') and 1")); // true 만 처리된다. 그래서 아래를 사용한다.
+        registerFunction("WITHIN",  new StandardSQLFunction("ST_Within", StandardBasicTypes.BOOLEAN));
         registerFunction("LENGTH", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE, "(ST_Length(?1)*111000)"));
+
+
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.hibernate.engine.config.spi.StandardConverters;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.spatial.dialect.oracle.OracleSpatial10gDialect;
 import org.hibernate.type.*;
+import org.onecell.common.hibernate.dialect.oracle.OracleFunctionBooleanType;
 
 public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
 
@@ -31,6 +32,8 @@ public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
             registerFunction("WITHIN", new SQLFunctionTemplate(BooleanType.INSTANCE, " ( SDO_INSIDE(?1,?2)= 'TRUE')  AND 1"));
             registerFunction("LENGTH", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE, " SDO_GEOM.SDO_Length(?1,0.5)"));
 
+            // Oracle Function 은 'TRUE' 를 반환한다. 그래서 Oracle 전용 BooleanType을 만들었다.
+            registerFunction("CONTAINS", new SQLFunctionTemplate(OracleFunctionBooleanType.INSTANCE, "SDO_CONTAINS(?1,?2)"));
 
         }
 

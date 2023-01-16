@@ -258,6 +258,13 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "${log4jVersion}"
 
 
+    /* ======== Excel ======== */
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
+
+
 }
 
 /* 라이브러리는 bootJar 는 하면 안되고 jar 는 생성가능해야 한다..*/

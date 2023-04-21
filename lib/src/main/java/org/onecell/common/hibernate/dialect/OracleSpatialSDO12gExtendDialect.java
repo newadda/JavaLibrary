@@ -25,6 +25,7 @@ public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
             registerFunction("ADD_DAYS", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(?1 +  numtodsinterval(?2,'DAY') )"));
             registerFunction("dayofyear", new SQLFunctionTemplate(IntegerType.INSTANCE, "  to_number(to_char(?1,'DDD'))")); // 년의 일수
 
+            registerFunction("trunc_day", new SQLFunctionTemplate(LocalDateTimeType.INSTANCE, "(TRUNC(?1,'DD') )"));
 
             /// Spatial Function
             // registerFunction("dwithin", new SQLFunctionTemplate(BooleanType.INSTANCE, "(SDO_WITHIN_DISTANCE(?1,?2,'distance=4 unit=M')='TRUE' )"));

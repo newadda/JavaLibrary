@@ -177,6 +177,13 @@ dependencies {
     /// PostgreSQL JDBC
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.20'
+
+    /// Oracle - jdbc
+    implementation files('libs/ojdbc8-12c.jar')
+
+    ///tibero
+    implementation files('libs/tibero6-jdbc.jar')
+    
     /// Apache Commons DBCP
     // https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2
     implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.8.0'

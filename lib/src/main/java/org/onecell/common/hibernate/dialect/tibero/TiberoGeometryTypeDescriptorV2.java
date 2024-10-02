@@ -93,7 +93,7 @@ public class TiberoGeometryTypeDescriptorV2 implements SqlTypeDescriptor {
                     throw e;
                 }
                 finally {
-                    blob.free();
+                    //blob.free(); // free() 하면안됨. 파라미터쓰기전에 blob 데이터 없앰
                 }
                 // ====
 
@@ -136,7 +136,7 @@ public class TiberoGeometryTypeDescriptorV2 implements SqlTypeDescriptor {
                     throw e;
                 }
                 finally {
-                    blob.free();
+                    //blob.free(); // free() 하면안됨. 파라미터쓰기전에 blob 데이터 없앰
                 }
                 // ====
 

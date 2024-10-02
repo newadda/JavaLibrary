@@ -11,6 +11,7 @@ import org.hibernate.spatial.dialect.WithCustomJPAFilter;
 import org.hibernate.type.*;
 
 import org.onecell.common.hibernate.dialect.tibero.TiberoGeometryTypeDescriptor;
+import org.onecell.common.hibernate.dialect.tibero.TiberoGeometryTypeDescriptorV2;
 import org.onecell.common.hibernate.dialect.tibero.TiberoSupport;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
 
 
         registerColumnType(
-                TiberoGeometryTypeDescriptor.INSTANCE.getSqlType(),
+                TiberoGeometryTypeDescriptorV2.INSTANCE.getSqlType(),
                 "GEOMETRY"
         );
 
@@ -63,8 +64,8 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
 
 
 
-        typeContributions.contributeType( new GeolatteGeometryType( TiberoGeometryTypeDescriptor.INSTANCE ) );
-        typeContributions.contributeType( new JTSGeometryType( TiberoGeometryTypeDescriptor.INSTANCE ) );
+        typeContributions.contributeType( new GeolatteGeometryType( TiberoGeometryTypeDescriptorV2.INSTANCE ) );
+        typeContributions.contributeType( new JTSGeometryType( TiberoGeometryTypeDescriptorV2.INSTANCE ) );
 
         typeContributions.contributeJavaTypeDescriptor( GeolatteGeometryJavaTypeDescriptor.INSTANCE );
         typeContributions.contributeJavaTypeDescriptor( JTSGeometryJavaTypeDescriptor.INSTANCE );

@@ -34,6 +34,6 @@ public class TiberoSpatialTemplates extends OracleTemplates {
         // 실제 Postgresql 와 Spatial 함수가 비슷하지만 동일하지 않기 때문에 결국 구현해야 한다.
         add(SpatialOps.WITHIN,"(ST_Within({0},{1})= '1')"); // st_within 의 tibero 반환은 1 혹은 0 이다...
         add(SpatialOps.LENGTH,"(ST_Length({0})*111000)"); // M 단위로 바꾸기 위해 111000 을 곱한다.
-
+        add(SpatialOps.INTERSECTS,"(ST_INTERSECTS({0},{1})= '1')");
     }
 }

@@ -13,5 +13,6 @@ public class OracleSpatialExtendsTemplates extends OracleSpatialTemplates {
                 " ( SDO_INSIDE({0},{1})= 'TRUE')");
         add(SpatialOps.LENGTH,"" +
                 " SDO_GEOM.SDO_Length({0},0.5)");
+        add(SpatialOps.INTERSECTS,"(SDO_ANYINTERACT({0},{1}) = 'TRUE')");
     }
 }

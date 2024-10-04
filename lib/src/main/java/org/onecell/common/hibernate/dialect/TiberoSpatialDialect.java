@@ -52,7 +52,7 @@ public class TiberoSpatialDialect extends Oracle12cDialect implements SpatialDia
         registerFunction("WITHIN",  new StandardSQLFunction("ST_Within", StandardBasicTypes.BOOLEAN));
         registerFunction("LENGTH", new SQLFunctionTemplate(StandardBasicTypes.DOUBLE, "(ST_Length(?1)*111000)"));
         registerFunction("CONTAINS",  new StandardSQLFunction("ST_Contains", StandardBasicTypes.BOOLEAN));
-
+        registerFunction("INTERSECTS", new StandardSQLFunction("ST_INTERSECTS", StandardBasicTypes.BOOLEAN));
     }
 
     @Override

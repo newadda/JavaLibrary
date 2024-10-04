@@ -35,7 +35,7 @@ public class OracleSpatialSDO12gExtendDialect extends OracleSpatial10gDialect {
 
             // Oracle Function 은 'TRUE' 를 반환한다. 그래서 Oracle 전용 BooleanType을 만들었다.
             registerFunction("CONTAINS", new SQLFunctionTemplate(OracleFunctionBooleanType.INSTANCE, "SDO_CONTAINS(?1,?2)"));
-
+            registerFunction("INTERSECTS", new SQLFunctionTemplate(OracleFunctionBooleanType.INSTANCE, "SDO_ANYINTERACT(?1,?2)"));
         }
 
 
